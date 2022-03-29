@@ -8,25 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.Set;
 
-@RestController
-public class Controller {
+@RestController("/user")
+public class UserController {
 
-    @GetMapping(path = "/admin")
-    public String helloAdmin(Principal principal) {
+    @GetMapping(path = "/info")
+    public String helloUser(Principal principal) {
         AccessToken accessToken = getAccessToken((KeycloakAuthenticationToken) principal);
         Set<String> roles = accessToken.getRealmAccess().getRoles();
         String name = accessToken.getPreferredUsername();
-        return "Hello admin, "+ name + " Your roles " + roles;
-    }
-
-    @GetMapping(path = "/user")
-    public String helloUser(Principal principal) {
-        AccessToken accessToken = getAccessToken((KeycloakAuthenticationToken) principal);
-        return "Hello user:, " + accessToken.getPreferredUsername();
-    }
-    @GetMapping(path = "/public")
-    public String helloAnonymous() {
-        return "Public endpoint";
+        return "Hello, "+ name + " Your roles " + roles;
     }
 
     private AccessToken getAccessToken(KeycloakAuthenticationToken principal) {
